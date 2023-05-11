@@ -62,6 +62,27 @@ class WorldEditAutomationClass():
             "yellow_concrete",
         ]
 
+        self.facing = [
+            "north",
+            "south",
+            "east",
+            "west"
+        ]
+
+        self.half = [
+            "top",
+            "bottom",
+        ]
+
+        self.old_stairs_materials = [
+            "nether_brick_stairs",
+        ]
+
+        self.new_stairs_materials = [
+            "cut_copper_stairs",
+        ]
+
+
     def replace_old_materials(self):
         print("Replacing old materials")
         time.sleep(5) # Time to open Minecraft
@@ -101,8 +122,36 @@ class WorldEditAutomationClass():
                 gui.typewrite('/' + command)
                 gui.press('enter')
 
+    def replace_roofs_with_copper(self, pos1, pos2):
 
+        pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
+        pos2_command = "pos2 " + str(pos2[0]) + "," + str(pos2[1]) + "," + str(pos2[2])
+
+        # Test commands
+        print(pos1_command)
+        print(pos2_command)
+
+        # Set position 1
+        # gui.press('/')
+        # gui.typewrite('/' + pos1_command)
+        # gui.press('enter')
+
+        # Set position 2
+        # gui.press('/')
+        # gui.typewrite('/' + pos2_command)
+        # gui.press('enter')
+
+        # //replace quartz_stairs[facing=east,half=top] oak_stairs[facing=east,half=top]
+        for old_stair in self.old_stairs_materials:
+            for new_stair in self.new_stairs_materials:
+                for facing in self.facing:
+                    replace_command = "replace " + old_stair + "[facing=" + facing + "] " + new_stair + "[facing=" + facing + "] "
+                    print(replace_command)
+                    # gui.press('/')
+                    # gui.typewrite('/' + replace_command)
+                    # gui.press('enter')
 
 
 world_edit = WorldEditAutomationClass()
-world_edit.replace_old_materials()
+# world_edit.replace_old_materials()
+world_edit.replace_roofs_with_copper((1,1,1),(2,2,2))
