@@ -139,8 +139,12 @@ class WorldEditAutomationClass():
     def increment_times_run(self):
         self.num_times_run += 1
 
+    def decrement_times_run(self):
+        self.num_times_run += -1
+
     def replace_old_materials(self):
         print("Replacing old materials")
+        self.print_to_gui("Replacing old materials in selected areas")
         time.sleep(10) # Time to open Minecraft
         # Loop through the list of coordinate pairs
         for i in range(len(self.coordinates)):
@@ -169,6 +173,7 @@ class WorldEditAutomationClass():
                 print(command)
                 gui.typewrite('/' + command)
                 gui.press('enter')
+                self.increment_times_run()
 
             # Destroy (replace with air) scaffolding materials
             for y in range(len(self.delete_materials)):
@@ -177,6 +182,9 @@ class WorldEditAutomationClass():
                 print(command)
                 gui.typewrite('/' + command)
                 gui.press('enter')
+                self.increment_times_run()
+
+        self.print_to_gui("Done replacing materials")
 
     def replace_roofs_with_copper(self, pos1, pos2):
         time.sleep(10)
@@ -208,6 +216,7 @@ class WorldEditAutomationClass():
                         gui.press('/')
                         gui.typewrite('/' + replace_stairs_command)
                         gui.press('enter')
+                        self.increment_times_run()
 
         for old_slab in self.old_slab_materials:
             for new_slab in self.new_slab_materials:
@@ -215,8 +224,10 @@ class WorldEditAutomationClass():
                 gui.press('/')
                 gui.typewrite('/' + replace_slab_command)
                 gui.press('enter')
+                self.increment_times_run()
 
     def clean_copper_roofs(self, pos1, pos2):
+        self.print_to_gui("Cleaning the copper roofs")
         time.sleep(10)
 
         pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
@@ -265,7 +276,10 @@ class WorldEditAutomationClass():
             gui.press('enter')
             self.increment_times_run()
 
+        self.print_to_gui("Done cleaning the copper roofs")
+
     def oxidize_copper_roofs(self, pos1, pos2):
+        self.print_to_gui("Oxidizing the copper roofs")
         time.sleep(10)
 
         pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
@@ -313,18 +327,32 @@ class WorldEditAutomationClass():
             gui.typewrite('/' + replace_block_command)
             gui.press('enter')
             self.increment_times_run()
+
+        self.print_to_gui("Done oxidizing the copper roofs")
+
+    # This function will run and undo all changes in 120 seconds if the user does not stop the script.
+    # This function is intended to undo any erroneous changes.
     def undo_commands(self):
-        time.sleep(10)
+        print("Commands will undo in 60 seconds if you do not stop the script.")
+        time.sleep(120) # Give a minute rest for blocks to render
         n = self.num_times_run
         for i in range(n):
             gui.press('/')
             gui.typewrite('/undo')
             gui.press('enter')
-            self.increment_times_run()
+            self.decrement_times_run()
+
+        print("Times run: " + str(self.num_times_run))
+
+    def print_to_gui(self, message):
+        time.sleep(10)
+        gui.press('/')
+        gui.typewrite('say ' + message)
+        gui.press('enter')
 
 
-print("Starting the WorldEdit Automation Process")
 world_edit = WorldEditAutomationClass()
+world_edit.print_to_gui("Starting the WorldEdit automation process")
 
 # Testing Area ****************************************************************
 # world_edit.replace_old_materials()
@@ -351,8 +379,11 @@ world_edit = WorldEditAutomationClass()
 # Testing oxidation
 # world_edit.oxidize_copper_roofs((-1656,60,160),(-1250,143,-333))
 # world_edit.clean_copper_roofs((-1656,60,160),(-1250,143,-333))
+
+# Test undo function
+# world_edit.undo_commands()
 # *****************************************************************************
 
-print("The WorldEdit automation process is now over.")
+world_edit.print_to_gui("The WorldEdit automation process is now complete")
 exit(1)
 
