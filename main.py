@@ -93,6 +93,24 @@ class WorldEditAutomationClass():
             "cut_copper_slab"
         ]
 
+        self.old_copper_stairs = [
+            "exposed_cut_copper_stairs",
+            "weathered_cut_copper_stairs",
+            "oxidized_cut_copper_stairs",
+        ]
+
+        self.old_copper_slabs = [
+            "exposed_cut_copper_slab",
+            "weathered_cut_copper_slab",
+            "oxidized_cut_copper_slab"
+        ]
+
+        self.old_copper_blocks = [
+            "exposed_cut_copper",
+            "weathered_cut_copper",
+            "oxidized_cut_copper"
+        ]
+
 
     def replace_old_materials(self):
         print("Replacing old materials")
@@ -171,7 +189,54 @@ class WorldEditAutomationClass():
                 gui.typewrite('/' + replace_slab_command)
                 gui.press('enter')
 
+    def clean_copper_roofs(self, pos1, pos2):
+        time.sleep(10)
+
+        pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
+        pos2_command = "pos2 " + str(pos2[0]) + "," + str(pos2[1]) + "," + str(pos2[2])
+
+        # Test commands
+        print(pos1_command)
+        print(pos2_command)
+
+        # Set position 1
+        gui.press('/')
+        gui.typewrite('/' + pos1_command)
+        gui.press('enter')
+
+        # Set position 2
+        gui.press('/')
+        gui.typewrite('/' + pos2_command)
+        gui.press('enter')
+
+
+        for old_stair in self.old_copper_stairs:
+            for facing in self.facing:
+                for half in self.half:
+                    replace_stairs_command = "replace " + old_stair + "[facing=" + facing + ",half=" + half + "] cut_copper_stairs[facing=" +\
+                                             facing + ",half=" + half + "] "
+                    print(replace_stairs_command)
+                    gui.press('/')
+                    gui.typewrite('/' + replace_stairs_command)
+                    gui.press('enter')
+
+        for old_slab in self.old_copper_slabs:
+            replace_slab_command = "replace " + old_slab + " cut_copper_slab"
+            print(replace_slab_command)
+            gui.press('/')
+            gui.typewrite('/' + replace_slab_command)
+            gui.press('enter')
+
+        for old_block in self.old_copper_blocks:
+            replace_slab_command = "replace " + old_block + " cut_copper"
+            print(replace_slab_command)
+            gui.press('/')
+            gui.typewrite('/' + replace_slab_command)
+            gui.press('enter')
+
 
 world_edit = WorldEditAutomationClass()
 # world_edit.replace_old_materials()
 world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
+world_edit.replace_roofs_with_copper((-1518,63,11),(-1381,119,-187))
+world_edit.clean_copper_roofs((-1636,66,87),(-1390,134,-191))
