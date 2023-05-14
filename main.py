@@ -93,24 +93,51 @@ class WorldEditAutomationClass():
             "cut_copper_slab"
         ]
 
-        self.old_copper_stairs = [
+        self.old_cut_copper_stairs = [
             "exposed_cut_copper_stairs",
             "weathered_cut_copper_stairs",
             "oxidized_cut_copper_stairs",
         ]
 
-        self.old_copper_slabs = [
+        self.old_cut_copper_slabs = [
             "exposed_cut_copper_slab",
             "weathered_cut_copper_slab",
             "oxidized_cut_copper_slab"
         ]
 
-        self.old_copper_blocks = [
+        self.old_cut_copper_blocks = [
             "exposed_cut_copper",
             "weathered_cut_copper",
             "oxidized_cut_copper"
         ]
 
+
+        self.unoxidized_cut_copper_blocks = [
+            "waxed_cut_copper",
+            "cut_copper",
+            "exposed_cut_copper",
+            "weathered_cut_copper",
+        ]
+
+        self.unoxidized_cut_copper_stairs = [
+            "waxed_cut_copper_stairs",
+            "cut_copper_stairs",
+            "exposed_cut_copper_stairs",
+            "weathered_cut_copper_stairs"
+        ]
+
+        self.unoxidized_cut_copper_slabs = [
+            "waxed_cut_copper_slab",
+            "cut_copper_slab",
+            "exposed_cut_copper_slab",
+            "weathered_cut_copper_slab"
+        ]
+
+        # For undoing processes
+        self.num_times_run = 0
+
+    def increment_times_run(self):
+        self.num_times_run += 1
 
     def replace_old_materials(self):
         print("Replacing old materials")
@@ -210,7 +237,7 @@ class WorldEditAutomationClass():
         gui.press('enter')
 
 
-        for old_stair in self.old_copper_stairs:
+        for old_stair in self.old_cut_copper_stairs:
             for facing in self.facing:
                 for half in self.half:
                     replace_stairs_command = "replace " + old_stair + "[facing=" + facing + ",half=" + half + "] cut_copper_stairs[facing=" +\
@@ -219,24 +246,113 @@ class WorldEditAutomationClass():
                     gui.press('/')
                     gui.typewrite('/' + replace_stairs_command)
                     gui.press('enter')
+                    self.increment_times_run()
 
-        for old_slab in self.old_copper_slabs:
+
+        for old_slab in self.old_cut_copper_slabs:
             replace_slab_command = "replace " + old_slab + " cut_copper_slab"
             print(replace_slab_command)
             gui.press('/')
             gui.typewrite('/' + replace_slab_command)
             gui.press('enter')
+            self.increment_times_run()
 
-        for old_block in self.old_copper_blocks:
-            replace_slab_command = "replace " + old_block + " cut_copper"
+        for old_block in self.old_cut_copper_blocks:
+            replace_block_command = "replace " + old_block + " cut_copper"
+            print(replace_block_command)
+            gui.press('/')
+            gui.typewrite('/' + replace_block_command)
+            gui.press('enter')
+            self.increment_times_run()
+
+    def oxidize_copper_roofs(self, pos1, pos2):
+        time.sleep(10)
+
+        pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
+        pos2_command = "pos2 " + str(pos2[0]) + "," + str(pos2[1]) + "," + str(pos2[2])
+
+        # Test commands
+        print(pos1_command)
+        print(pos2_command)
+
+        # Set position 1
+        gui.press('/')
+        gui.typewrite('/' + pos1_command)
+        gui.press('enter')
+
+        # Set position 2
+        gui.press('/')
+        gui.typewrite('/' + pos2_command)
+        gui.press('enter')
+
+
+        for unoxidized_stair in self.unoxidized_cut_copper_stairs:
+            for facing in self.facing:
+                for half in self.half:
+                    replace_stairs_command = "replace " + unoxidized_stair + "[facing=" + facing + ",half=" + half + "] oxidized_cut_copper_stairs[facing=" +\
+                                             facing + ",half=" + half + "] "
+                    print(replace_stairs_command)
+                    gui.press('/')
+                    gui.typewrite('/' + replace_stairs_command)
+                    gui.press('enter')
+                    self.increment_times_run()
+
+
+        for unoxidized_slab in self.unoxidized_cut_copper_slabs:
+            replace_slab_command = "replace " + unoxidized_slab + " oxidized_cut_copper_slab"
             print(replace_slab_command)
             gui.press('/')
             gui.typewrite('/' + replace_slab_command)
             gui.press('enter')
+            self.increment_times_run()
+
+        for unoxidized_block in self.unoxidized_cut_copper_blocks:
+            replace_block_command = "replace " + unoxidized_block + " oxidized_cut_copper"
+            print(replace_block_command)
+            gui.press('/')
+            gui.typewrite('/' + replace_block_command)
+            gui.press('enter')
+            self.increment_times_run()
+    def undo_commands(self):
+        time.sleep(10)
+        n = self.num_times_run
+        for i in range(n):
+            gui.press('/')
+            gui.typewrite('/undo')
+            gui.press('enter')
+            self.increment_times_run()
 
 
+print("Starting the WorldEdit Automation Process")
 world_edit = WorldEditAutomationClass()
+
+# Testing Area ****************************************************************
 # world_edit.replace_old_materials()
-world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
-world_edit.replace_roofs_with_copper((-1518,63,11),(-1381,119,-187))
-world_edit.clean_copper_roofs((-1636,66,87),(-1390,134,-191))
+# world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
+# world_edit.replace_roofs_with_copper((-1518,63,11),(-1381,119,-187))
+# world_edit.clean_copper_roofs((-1636,66,87),(-1390,150,-191))
+# world_edit.oxidize_copper_roofs((-1636,66,87),(-1390,150,-191))
+# *****************************************************************************
+
+# Sunday, May 14, 2023 ********************************************************
+
+# Put copper on the roofs
+# world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
+# world_edit.replace_roofs_with_copper((-1518,63,11),(-1381,119,-187))
+# world_edit.replace_roofs_with_copper((-1389,127,-122),(-1302,65,-304))
+# world_edit.replace_roofs_with_copper((-1304,138,-119),(-1496,66,121))
+#
+# # Clean up all roofs
+# world_edit.clean_copper_roofs((-1618,66,76),(-1540,97,-23))
+# world_edit.clean_copper_roofs((-1518,63,11),(-1381,119,-187))
+# world_edit.clean_copper_roofs((-1389,127,-122),(-1302,65,-304))
+# world_edit.clean_copper_roofs((-1304,138,-119),(-1496,66,121))
+
+# Testing oxidation
+# world_edit.oxidize_copper_roofs((-1656,60,160),(-1250,143,-333))
+# world_edit.clean_copper_roofs((-1656,60,160),(-1250,143,-333))
+# *****************************************************************************
+
+print("The WorldEdit automation process is now over.")
+exit(1)
+
