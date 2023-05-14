@@ -1,7 +1,6 @@
 import pyautogui as gui
 import time
 import random
-import tkinter as tk
 
 
 
@@ -151,38 +150,26 @@ class WorldEditAutomationClass():
             # Position 1
             pos1 = "pos1 " + str(self.coordinates[i][0][0]) + "," + str(self.coordinates[i][0][1]) + "," + str(
                 self.coordinates[i][0][2])
-            # print(pos1)
-            gui.press('/')
-            gui.typewrite('/' + pos1)
-            gui.press('enter')
+            self.send_command(pos1)
 
             # Position 2
             pos2 = "pos2 " + str(self.coordinates[i][1][0]) + "," + str(self.coordinates[i][1][1]) + "," + str(
                 self.coordinates[i][1][2])
-            # print(pos2)
-            gui.press('/')
-            gui.typewrite('/' + pos2)
-            gui.press('enter')
+            self.send_command(pos2)
 
 
             # Replace the old material with a random new material
             for x in range(len(self.old_materials)):
-                gui.press('/')
+
                 command = "replace " + self.old_materials[x] + " " + \
                           self.new_materials[random.randint(0, len(self.new_materials))-1]
                 print(command)
-                gui.typewrite('/' + command)
-                gui.press('enter')
-                self.increment_times_run()
+                self.send_command(command)
 
             # Destroy (replace with air) scaffolding materials
             for y in range(len(self.delete_materials)):
-                gui.press('/')
                 command = "replace " + self.delete_materials[y] + " air"
-                print(command)
-                gui.typewrite('/' + command)
-                gui.press('enter')
-                self.increment_times_run()
+                self.send_command(command)
 
         self.print_to_gui("Done replacing materials")
 
@@ -193,18 +180,14 @@ class WorldEditAutomationClass():
         pos2_command = "pos2 " + str(pos2[0]) + "," + str(pos2[1]) + "," + str(pos2[2])
 
         # Test commands
-        print(pos1_command)
-        print(pos2_command)
+        # print(pos1_command)
+        # print(pos2_command)
 
         # Set position 1
-        gui.press('/')
-        gui.typewrite('/' + pos1_command)
-        gui.press('enter')
+        self.send_command(pos1_command)
 
         # Set position 2
-        gui.press('/')
-        gui.typewrite('/' + pos2_command)
-        gui.press('enter')
+        self.send_command(pos2_command)
 
         for old_stair in self.old_stairs_materials:
             for new_stair in self.new_stairs_materials:
@@ -212,19 +195,12 @@ class WorldEditAutomationClass():
                     for half in self.half:
                         replace_stairs_command = "replace " + old_stair + "[facing=" + facing + ",half=" + half + "] " + \
                                           new_stair + "[facing=" + facing + ",half=" + half + "] "
-                        print(replace_stairs_command)
-                        gui.press('/')
-                        gui.typewrite('/' + replace_stairs_command)
-                        gui.press('enter')
-                        self.increment_times_run()
+                        self.send_command(replace_stairs_command)
 
         for old_slab in self.old_slab_materials:
             for new_slab in self.new_slab_materials:
                 replace_slab_command = "replace " + old_slab + " " + new_slab
-                gui.press('/')
-                gui.typewrite('/' + replace_slab_command)
-                gui.press('enter')
-                self.increment_times_run()
+                self.send_command(replace_slab_command)
 
     def clean_copper_roofs(self, pos1, pos2):
         self.print_to_gui("Cleaning the copper roofs")
@@ -238,14 +214,11 @@ class WorldEditAutomationClass():
         print(pos2_command)
 
         # Set position 1
-        gui.press('/')
-        gui.typewrite('/' + pos1_command)
-        gui.press('enter')
+        self.send_command(pos1_command)
+
 
         # Set position 2
-        gui.press('/')
-        gui.typewrite('/' + pos2_command)
-        gui.press('enter')
+        self.send_command(pos2_command)
 
 
         for old_stair in self.old_cut_copper_stairs:
@@ -253,28 +226,15 @@ class WorldEditAutomationClass():
                 for half in self.half:
                     replace_stairs_command = "replace " + old_stair + "[facing=" + facing + ",half=" + half + "] cut_copper_stairs[facing=" +\
                                              facing + ",half=" + half + "] "
-                    print(replace_stairs_command)
-                    gui.press('/')
-                    gui.typewrite('/' + replace_stairs_command)
-                    gui.press('enter')
-                    self.increment_times_run()
-
+                    self.send_command(replace_stairs_command)
 
         for old_slab in self.old_cut_copper_slabs:
             replace_slab_command = "replace " + old_slab + " cut_copper_slab"
-            print(replace_slab_command)
-            gui.press('/')
-            gui.typewrite('/' + replace_slab_command)
-            gui.press('enter')
-            self.increment_times_run()
+            self.send_command(replace_slab_command)
 
         for old_block in self.old_cut_copper_blocks:
             replace_block_command = "replace " + old_block + " cut_copper"
-            print(replace_block_command)
-            gui.press('/')
-            gui.typewrite('/' + replace_block_command)
-            gui.press('enter')
-            self.increment_times_run()
+            self.send_command(replace_block_command)
 
         self.print_to_gui("Done cleaning the copper roofs")
 
@@ -290,43 +250,26 @@ class WorldEditAutomationClass():
         print(pos2_command)
 
         # Set position 1
-        gui.press('/')
-        gui.typewrite('/' + pos1_command)
-        gui.press('enter')
+        self.send_command(pos1_command)
 
         # Set position 2
-        gui.press('/')
-        gui.typewrite('/' + pos2_command)
-        gui.press('enter')
-
+        self.send_command(pos2_command)
 
         for unoxidized_stair in self.unoxidized_cut_copper_stairs:
             for facing in self.facing:
                 for half in self.half:
                     replace_stairs_command = "replace " + unoxidized_stair + "[facing=" + facing + ",half=" + half + "] oxidized_cut_copper_stairs[facing=" +\
                                              facing + ",half=" + half + "] "
-                    print(replace_stairs_command)
-                    gui.press('/')
-                    gui.typewrite('/' + replace_stairs_command)
-                    gui.press('enter')
-                    self.increment_times_run()
+                    self.send_command(replace_stairs_command)
 
 
         for unoxidized_slab in self.unoxidized_cut_copper_slabs:
             replace_slab_command = "replace " + unoxidized_slab + " oxidized_cut_copper_slab"
-            print(replace_slab_command)
-            gui.press('/')
-            gui.typewrite('/' + replace_slab_command)
-            gui.press('enter')
-            self.increment_times_run()
+            self.send_command(replace_slab_command)
 
         for unoxidized_block in self.unoxidized_cut_copper_blocks:
             replace_block_command = "replace " + unoxidized_block + " oxidized_cut_copper"
-            print(replace_block_command)
-            gui.press('/')
-            gui.typewrite('/' + replace_block_command)
-            gui.press('enter')
-            self.increment_times_run()
+            self.send_command(replace_block_command)
 
         self.print_to_gui("Done oxidizing the copper roofs")
 
@@ -334,14 +277,16 @@ class WorldEditAutomationClass():
     # This function is intended to undo any erroneous changes.
     def undo_commands(self):
         print("Commands will undo in 60 seconds if you do not stop the script.")
+        self.print_to_gui("Commands will undo in 60 seconds if you do not stop the script.")
         time.sleep(120) # Give a minute rest for blocks to render
         n = self.num_times_run
         for i in range(n):
+            # Commands are not run through self.send_command() since it includes the self.increment_times_run() function
             gui.press('/')
             gui.typewrite('/undo')
             gui.press('enter')
             self.decrement_times_run()
-
+        self.print_to_gui("Done undoing commands.")
         print("Times run: " + str(self.num_times_run))
 
     def print_to_gui(self, message):
@@ -349,6 +294,26 @@ class WorldEditAutomationClass():
         gui.press('/')
         gui.typewrite('say ' + message)
         gui.press('enter')
+
+    def send_command(self, command):
+        print(command)
+        gui.press('/')
+        gui.typewrite('/' + command)
+        gui.press('enter')
+        self.increment_times_run()
+
+    def generate_house(self, pos1, length, width, height):
+        self.print_to_gui("Generating a random house")
+        time.sleep(10)
+
+        # Only position 1 is given as a parameter. Position 2 is calculated
+        pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
+
+        # Set position 1
+        print(pos1_command)
+        self.send_command(pos1_command)
+
+
 
 
 world_edit = WorldEditAutomationClass()
