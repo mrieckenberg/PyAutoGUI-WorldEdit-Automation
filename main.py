@@ -352,7 +352,7 @@ class WorldEditAutomationClass():
 
 
 world_edit = WorldEditAutomationClass()
-world_edit.print_to_gui("Starting the WorldEdit automation process")
+world_edit.print_to_gui("Starting the WorldEdit automation process ")
 
 # Testing Area ****************************************************************
 # world_edit.replace_old_materials()
@@ -384,6 +384,6 @@ world_edit.print_to_gui("Starting the WorldEdit automation process")
 # world_edit.undo_commands()
 # *****************************************************************************
 
-world_edit.print_to_gui("The WorldEdit automation process is now complete")
+world_edit.print_to_gui("The WorldEdit automation process is now complete ")
 exit(1)
 
