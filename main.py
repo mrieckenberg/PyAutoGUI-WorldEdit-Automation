@@ -8,47 +8,52 @@ class WorldEditAutomationClass():
     def __init__(self):
 
         self.coordinates = [
-            # Test coordinates *************************
-            # [(646, 66, 2029), (621, 75, 2082)],
-            # [(588, 71, 2056), (570, 82, 2077)],
-            # ******************************************
 
-            # Row house coordinates
-            [(-1207, 113, -153), (-1227, 65, -271)],
-            [(-1194, 113, -275), (-1171, 65, -156)],
+            # Island house coordinates
+            [(-1495, 66, 120), (-1446, 91, 97)],
+            [(-1408, 65, 99), (-1453, 99, 26)],
+            [(-1413, 65, 57), (-1379, 91, 19)],
+            [(-1389, 65, 17), (-1378, 87, -7)],
+            [(-1391, 65, -32), (-1378, 87, -7)],
+            [(-1381, 84, -40), (-1354, 65, -56)],
+
         ]
 
         self.old_materials = [
-            # Test materials *************************
-            # "red_sand",
-            # "orange_terracotta",
-            # "terracotta",
-            # ****************************************
 
-            # Row house old materials
-            "chiseled_red_sandstone",
+            # Island house old materials
+            "light_blue_concrete",
             "red_terracotta",
-            "stripped_jungle_log",
-            "green_terracotta",
-            "bricks",
+            "white_terracotta",
+            "lime_terracotta",
+            "magenta_terracotta",
+            "blue_terracotta",
+            "orange_terracotta",
 
         ]
 
         self.new_materials = [
-            # Test materials *************************
-            # "gold_block",
-            # "bricks",
-            # "acacia_planks",
-            # "oak_planks",
-            # ****************************************
 
-            # Row house new materials
+            # Terracottas
             "terracotta",
-            "blue_terracotta",
+            "white_terracotta",
+            "light_gray_terracotta",
+            "gray_terracotta",
+            "black_terracotta",
             "brown_terracotta",
+            "red_terracotta",
+            "orange_terracotta",
+            "yellow_terracotta",
+            "lime_terracotta",
+            "green_terracotta",
+            "cyan_terracotta",
             "light_blue_terracotta",
+            "blue_terracotta",
             "purple_terracotta",
-            "chiseled_sandstone",
+            "magenta_terracotta",
+            "pink_terracotta",
+
+            # Other materials
             "bricks",
 
 
@@ -310,8 +315,9 @@ class WorldEditAutomationClass():
         pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
 
         # Set position 1
-        print(pos1_command)
         self.send_command(pos1_command)
+
+
 
 
 
@@ -319,29 +325,17 @@ class WorldEditAutomationClass():
 world_edit = WorldEditAutomationClass()
 world_edit.print_to_gui("Starting the WorldEdit automation process ")
 
-# Testing Area ****************************************************************
-# world_edit.replace_old_materials()
-# world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
-# world_edit.replace_roofs_with_copper((-1518,63,11),(-1381,119,-187))
-# world_edit.clean_copper_roofs((-1636,66,87),(-1390,150,-191))
-# world_edit.oxidize_copper_roofs((-1636,66,87),(-1390,150,-191))
-# *****************************************************************************
 
 # Sunday, May 14, 2023 ********************************************************
+# world_edit.replace_old_materials()
 
 # Put copper on the roofs
 # world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
 # world_edit.replace_roofs_with_copper((-1518,63,11),(-1381,119,-187))
 # world_edit.replace_roofs_with_copper((-1389,127,-122),(-1302,65,-304))
 # world_edit.replace_roofs_with_copper((-1304,138,-119),(-1496,66,121))
-#
-# # Clean up all roofs
-# world_edit.clean_copper_roofs((-1618,66,76),(-1540,97,-23))
-# world_edit.clean_copper_roofs((-1518,63,11),(-1381,119,-187))
-# world_edit.clean_copper_roofs((-1389,127,-122),(-1302,65,-304))
-# world_edit.clean_copper_roofs((-1304,138,-119),(-1496,66,121))
 
-# Testing oxidation
+# Change all roofs
 # world_edit.oxidize_copper_roofs((-1656,60,160),(-1250,143,-333))
 # world_edit.clean_copper_roofs((-1656,60,160),(-1250,143,-333))
 
