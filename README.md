@@ -1,2 +1,2 @@
-# Pyautogui-WorldEdit-Automation
-Automating WorldEdit commands with Pyautogui to speed up tasks.
+# PyAutoGUI-WorldEdit-Automation
+Automating WorldEdit commands with PyAutoGUI to speed up tasks.
