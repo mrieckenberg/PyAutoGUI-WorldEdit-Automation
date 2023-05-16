@@ -121,6 +121,10 @@ class WorldEditAutomationClass():
             "cut_copper",
             "exposed_cut_copper",
             "weathered_cut_copper",
+            "copper_block",
+            "exposed_copper_block",
+            "weathered_copper_block",
+
         ]
 
         self.unoxidized_cut_copper_stairs = [
@@ -307,15 +311,58 @@ class WorldEditAutomationClass():
         gui.press('enter')
         self.increment_times_run()
 
-    def generate_house(self, pos1, length, width, height):
+    def generate_simple_house(self, pos1, length, width, height):
+        # TODO: turn this into a function that allows the user to choose how many floors (default 1)
+        # use a for loop and increment height so do something like pos1[1] + height*index
         self.print_to_gui("Generating a random house")
         time.sleep(10)
 
         # Only position 1 is given as a parameter. Position 2 is calculated
         pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
+        pos2_command = "pos2 " + str(pos1[0]+length) + "," + str(pos1[1]+height) + "," + str(pos1[2]+width)
 
-        # Set position 1
         self.send_command(pos1_command)
+        self.send_command(pos2_command)
+
+        material = self.new_materials[random.randint(0,len(self.new_materials))]
+        self.send_command("walls " + material)
+
+        # pos2_command = "pos2 " + str(pos1[0]) + "," + str(pos1[1]+height) + "," + str(pos1[2])
+        # self.send_command(pos2_command)
+        # self.send_command("set " + "oak_planks")
+
+        key_points = [
+            # These work properly
+            [(pos1[0],pos1[1],pos1[2]),(pos1[0],pos1[1]+height,pos1[2])],  # LH lower corner
+            [(pos1[0] + length, pos1[1], pos1[2]), (pos1[0] + length, pos1[1] + height, pos1[2])],  # LH lower corner
+            [(pos1[0], pos1[1], pos1[2] + width), (pos1[0], pos1[1] + height, pos1[2] + width)],  # LH upper corner
+            [(pos1[0] + length, pos1[1], pos1[2] + width), (pos1[0] + length, pos1[1] + height, pos1[2] + width)],  # LH upper corner
+        ]
+
+        for i in range(len(key_points)):
+            # Position 1
+            pos1_command = "pos1 " + str(key_points[i][0][0]) + "," + str(key_points[i][0][1]) + "," + str(
+                key_points[i][0][2])
+            self.send_command(pos1_command)
+
+            # Position 2
+            pos2_command = "pos2 " + str(key_points[i][1][0]) + "," + str(key_points[i][1][1]) + "," + str(
+                key_points[i][1][2])
+            self.send_command(pos2_command)
+
+
+            self.send_command("set oak_planks")
+
+
+        self.send_command("pos1 " + str(key_points[0][1][0]) + "," + str(key_points[0][1][1]) + "," + str(
+            key_points[0][1][2]))
+        self.send_command("pos2 " + str(key_points[3][1][0]) + "," + str(key_points[3][1][1]) + "," + str(
+            key_points[3][1][2]))
+        self.send_command("replace " + material + " oak_planks")
+
+
+
+
 
 
 
@@ -342,6 +389,12 @@ world_edit.print_to_gui("Starting the WorldEdit automation process ")
 # Test undo function
 # world_edit.undo_commands()
 # *****************************************************************************
+
+# world_edit.oxidize_copper_roofs((-1443,65,182),(-1408,117,143))
+
+world_edit.generate_simple_house((-1337, 65, -97), 5, 6, 7)
+
+
 
 world_edit.print_to_gui("The WorldEdit automation process is now complete ")
 exit(1)
