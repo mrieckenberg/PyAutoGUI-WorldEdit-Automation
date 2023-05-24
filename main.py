@@ -8,27 +8,38 @@ class WorldEditAutomationClass():
     def __init__(self):
 
         self.coordinates = [
-
-            # Island house coordinates
-            [(-1495, 66, 120), (-1446, 91, 97)],
-            [(-1408, 65, 99), (-1453, 99, 26)],
-            [(-1413, 65, 57), (-1379, 91, 19)],
-            [(-1389, 65, 17), (-1378, 87, -7)],
-            [(-1391, 65, -32), (-1378, 87, -7)],
-            [(-1381, 84, -40), (-1354, 65, -56)],
-
+            [(-1420, 95, -150), (-1408, 64, -186)],
+            [(-1375, 91, -185), (-1360, 65, -211)],
+            [(-1354, 65, -210), (-1342, 84, -183)],
+            [(-1355, 90, -137), (-1368, 65, -121)],
+            [(-1355, 90, -137), (-1340, 65, -152)],
+            [(-1339, 87, -157), (-1329, 65, -132)],
+            [(-1345, 90, -153), (-1315, 65, -121)],
+            [(-1318, 90, -133), (-1329, 65, -159)],
+            [(-1326, 85, -97), (-1315, 65, -72)],
+            [(-1324, 83, -71), (-1315, 65, -44)],
         ]
 
         self.old_materials = [
 
             # Island house old materials
-            "light_blue_concrete",
-            "red_terracotta",
+            # "light_blue_concrete",
+            # "red_terracotta",
+            # "white_terracotta",
+            # "lime_terracotta",
+            # "magenta_terracotta",
+            # "blue_terracotta",
+            # "orange_terracotta",
+
+            "clay",
             "white_terracotta",
+            "terracotta",
+            "yellow_terracotta",
+            "black_terracotta",
+            "red_terracotta",
             "lime_terracotta",
-            "magenta_terracotta",
-            "blue_terracotta",
-            "orange_terracotta",
+            "pink_terracotta",
+
 
         ]
 
@@ -53,8 +64,30 @@ class WorldEditAutomationClass():
             "magenta_terracotta",
             "pink_terracotta",
 
+            # Concretes
+            "white_concrete",
+            "light_gray_concrete",
+            "gray_concrete",
+            "black_concrete",
+            "brown_concrete",
+            "red_concrete",
+            "orange_concrete",
+            "yellow_concrete",
+            "lime_concrete",
+            "green_concrete",
+            "cyan_concrete",
+            "light_blue_concrete",
+            "blue_concrete",
+            "purple_concrete",
+            "magenta_concrete",
+            "pink_concrete",
+
+
             # Other materials
             "bricks",
+            "cobblestone",
+
+
 
 
         ]
@@ -62,8 +95,8 @@ class WorldEditAutomationClass():
         # Any blocks that wish to be deleted
         self.delete_materials = [
             "dirt",
-            "gray_concrete",
-            "yellow_concrete",
+            # "gray_concrete",
+            # "yellow_concrete",
         ]
 
         self.facing = [
@@ -81,7 +114,7 @@ class WorldEditAutomationClass():
         self.old_stairs_materials = [
             "nether_brick_stairs",
             "red_nether_brick_stairs",
-
+            "spruce_stairs",
         ]
 
         self.new_stairs_materials = [
@@ -90,7 +123,8 @@ class WorldEditAutomationClass():
 
         self.old_slab_materials = [
             "nether_brick_slab",
-            "red_nether_brick_slab"
+            "red_nether_brick_slab",
+            "spruce_slab",
         ]
 
         self.new_slab_materials = [
@@ -116,7 +150,7 @@ class WorldEditAutomationClass():
         ]
 
 
-        self.unoxidized_cut_copper_blocks = [
+        self.unoxidized_copper_blocks = [
             "waxed_cut_copper",
             "cut_copper",
             "exposed_cut_copper",
@@ -127,18 +161,32 @@ class WorldEditAutomationClass():
 
         ]
 
-        self.unoxidized_cut_copper_stairs = [
+        self.unoxidized_copper_stairs = [
             "waxed_cut_copper_stairs",
             "cut_copper_stairs",
             "exposed_cut_copper_stairs",
             "weathered_cut_copper_stairs"
         ]
 
-        self.unoxidized_cut_copper_slabs = [
+        self.unoxidized_copper_slabs = [
             "waxed_cut_copper_slab",
             "cut_copper_slab",
             "exposed_cut_copper_slab",
             "weathered_cut_copper_slab"
+        ]
+
+        self.old_logs = [
+            "oak_log",
+            # "birch_log",
+        ]
+
+        self.new_logs = [
+            # "birch_log",
+            "spruce_log",
+            "oak_log",
+            "acacia_log",
+            'jungle_log',
+            "dark_oak_log",
         ]
 
         # For undoing processes
@@ -169,7 +217,6 @@ class WorldEditAutomationClass():
 
             # Replace the old material with a random new material
             for x in range(len(self.old_materials)):
-
                 command = "replace " + self.old_materials[x] + " " + \
                           self.new_materials[random.randint(0, len(self.new_materials))-1]
                 print(command)
@@ -179,6 +226,13 @@ class WorldEditAutomationClass():
             for y in range(len(self.delete_materials)):
                 command = "replace " + self.delete_materials[y] + " air"
                 self.send_command(command)
+
+            # Replace old logs
+            for z in range(len(self.old_logs)):
+                command = "replace " + self.old_logs[z] + " " + self.new_logs[random.randint(0, len(self.new_logs)-1)]
+                self.send_command(command)
+
+
 
         self.print_to_gui("Done replacing materials")
 
@@ -206,9 +260,10 @@ class WorldEditAutomationClass():
                                           new_stair + "[facing=" + facing + ",half=" + half + "] "
                         self.send_command(replace_stairs_command)
 
+
         for old_slab in self.old_slab_materials:
-            for new_slab in self.new_slab_materials:
-                replace_slab_command = "replace " + old_slab + " " + new_slab
+            for half in self.half:
+                replace_slab_command = "replace " + old_slab + "[type=" + half + "] cut_copper_slab[type=" + half + "]"
                 self.send_command(replace_slab_command)
 
     def clean_copper_roofs(self, pos1, pos2):
@@ -238,8 +293,9 @@ class WorldEditAutomationClass():
                     self.send_command(replace_stairs_command)
 
         for old_slab in self.old_cut_copper_slabs:
-            replace_slab_command = "replace " + old_slab + " cut_copper_slab"
-            self.send_command(replace_slab_command)
+            for half in self.half:
+                replace_slab_command = "replace " + old_slab + "[type=" + half + "] cut_copper_slab[type=" + half + "]"
+                self.send_command(replace_slab_command)
 
         for old_block in self.old_cut_copper_blocks:
             replace_block_command = "replace " + old_block + " cut_copper"
@@ -264,7 +320,7 @@ class WorldEditAutomationClass():
         # Set position 2
         self.send_command(pos2_command)
 
-        for unoxidized_stair in self.unoxidized_cut_copper_stairs:
+        for unoxidized_stair in self.unoxidized_copper_stairs:
             for facing in self.facing:
                 for half in self.half:
                     replace_stairs_command = "replace " + unoxidized_stair + "[facing=" + facing + ",half=" + half + "] oxidized_cut_copper_stairs[facing=" +\
@@ -272,11 +328,11 @@ class WorldEditAutomationClass():
                     self.send_command(replace_stairs_command)
 
 
-        for unoxidized_slab in self.unoxidized_cut_copper_slabs:
+        for unoxidized_slab in self.unoxidized_copper_slabs:
             replace_slab_command = "replace " + unoxidized_slab + " oxidized_cut_copper_slab"
             self.send_command(replace_slab_command)
 
-        for unoxidized_block in self.unoxidized_cut_copper_blocks:
+        for unoxidized_block in self.unoxidized_copper_blocks:
             replace_block_command = "replace " + unoxidized_block + " oxidized_cut_copper"
             self.send_command(replace_block_command)
 
@@ -299,15 +355,22 @@ class WorldEditAutomationClass():
         print("Times run: " + str(self.num_times_run))
 
     def print_to_gui(self, message):
-        time.sleep(10)
+        time.sleep(5)
         gui.press('/')
         gui.typewrite('say ' + message)
         gui.press('enter')
 
-    def send_command(self, command):
+    def send_command(self, command): # Send WorldEdit command: //
         print(command)
         gui.press('/')
         gui.typewrite('/' + command)
+        gui.press('enter')
+        self.increment_times_run()
+
+    def send_vanilla_command(self, command): # Send Vanilla command: /
+        print(command)
+        gui.press('/')
+        gui.typewrite(command)
         gui.press('enter')
         self.increment_times_run()
 
@@ -370,11 +433,11 @@ class WorldEditAutomationClass():
 
 
 world_edit = WorldEditAutomationClass()
-world_edit.print_to_gui("Starting the WorldEdit automation process ")
+world_edit.print_to_gui("Starting the WorldEdit automation process")
 
 
-# Sunday, May 14, 2023 ********************************************************
-# world_edit.replace_old_materials()
+
+world_edit.replace_old_materials()
 
 # Put copper on the roofs
 # world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
@@ -388,14 +451,8 @@ world_edit.print_to_gui("Starting the WorldEdit automation process ")
 
 # Test undo function
 # world_edit.undo_commands()
-# *****************************************************************************
-
-# world_edit.oxidize_copper_roofs((-1443,65,182),(-1408,117,143))
-
-world_edit.generate_simple_house((-1337, 65, -97), 5, 6, 7)
 
 
-
-world_edit.print_to_gui("The WorldEdit automation process is now complete ")
+world_edit.print_to_gui("The WorldEdit automation process is now complete")
 exit(1)
 
