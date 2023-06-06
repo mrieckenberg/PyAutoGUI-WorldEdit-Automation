@@ -40,6 +40,12 @@ class WorldEditAutomationClass():
             "pink",
         ]
 
+        self.blocktype =[
+            "",
+            "cracked",
+            "mossy",
+        ]
+
         self.terracottas = [
             colour + "_terracotta" for colour in self.colours
         ]
@@ -51,6 +57,8 @@ class WorldEditAutomationClass():
         self.wools = [
             colour + "_wool" for colour in self.colours
         ]
+
+
 
         self.new_materials = [
             "terracotta",
@@ -159,7 +167,7 @@ class WorldEditAutomationClass():
         self.old_cut_copper_blocks = [
             "exposed_cut_copper",
             "weathered_cut_copper",
-            "oxidized_cut_copper"
+            "oxidized_cut_copper",
         ]
 
 
@@ -169,9 +177,16 @@ class WorldEditAutomationClass():
             "exposed_cut_copper",
             "weathered_cut_copper",
             "copper_block",
-            "exposed_copper_block",
-            "weathered_copper_block",
+            "exposed_copper",
+            "weathered_copper",
+        ]
 
+        self.oxidized_copper_blocks = [
+            "exposed_cut_copper",
+            "weathered_cut_copper",
+            "exposed_copper",
+            "weathered_copper",
+            "oxidized_cut_copper",
         ]
 
         self.unoxidized_copper_stairs = [
@@ -280,15 +295,11 @@ class WorldEditAutomationClass():
                 self.send_worldedit_command(replace_slab_command)
 
     def clean_copper_roofs(self, pos1, pos2):
-        # self.print_to_gui("Cleaning the copper roofs")
-        time.sleep(10)
+
 
         pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
         pos2_command = "pos2 " + str(pos2[0]) + "," + str(pos2[1]) + "," + str(pos2[2])
 
-        # Test commands
-        print(pos1_command)
-        print(pos2_command)
 
         # Set position 1
         self.send_worldedit_command(pos1_command)
@@ -310,11 +321,11 @@ class WorldEditAutomationClass():
                 replace_slab_command = "replace " + old_slab + "[type=" + half + "] cut_copper_slab[type=" + half + "]"
                 self.send_worldedit_command(replace_slab_command)
 
-        for old_block in self.old_cut_copper_blocks:
+        for old_block in self.unoxidized_copper_blocks:
             replace_block_command = "replace " + old_block + " cut_copper"
             self.send_worldedit_command(replace_block_command)
 
-        self.print_to_gui("Done cleaning the copper roofs")
+        # self.print_to_gui("Done cleaning the copper roofs")
 
     def oxidize_copper_roofs(self, pos1, pos2):
         self.print_to_gui("Oxidizing the copper roofs")
@@ -349,7 +360,7 @@ class WorldEditAutomationClass():
             replace_block_command = "replace " + unoxidized_block + " oxidized_cut_copper"
             self.send_worldedit_command(replace_block_command)
 
-        self.print_to_gui("Done oxidizing the copper roofs")
+        # self.print_to_gui("Done oxidizing the copper roofs")
 
     # This function will run and undo all changes in 120 seconds if the user does not stop the script.
     # This function is intended to undo any erroneous changes.
@@ -367,12 +378,6 @@ class WorldEditAutomationClass():
         self.print_to_gui("Done undoing commands.")
         print("Times run: " + str(self.num_times_run))
 
-    def print_to_gui(self, message):
-        time.sleep(5)
-        gui.press('/')
-        gui.typewrite('say ' + message)
-        gui.press('enter')
-
     # Sends a vanilla command: /command
     def send_command(self, command):
         print('/' + command)
@@ -384,6 +389,13 @@ class WorldEditAutomationClass():
     # Send WorldEdit command: //command
     def send_worldedit_command(self, command):
         self.send_command('/' + command)
+
+    def print_to_gui(self, message):
+        # time.sleep(5)
+        # gui.press('/')
+        # gui.typewrite('say ' + message)
+        # gui.press('enter')
+        self.send_command('say ' + message)
 
     # TODO: Turn this into a function that allows the user to choose how many floors (default 1)
     # TODO: Turn this into a vanilla commands function
@@ -447,7 +459,7 @@ class WorldEditAutomationClass():
 world_edit = WorldEditAutomationClass()
 # world_edit.print_to_gui("Starting the WorldEdit automation process")
 
-
+time.sleep(10)
 
 # world_edit.replace_old_materials()
 
@@ -459,7 +471,8 @@ world_edit = WorldEditAutomationClass()
 
 # Change all roofs
 # world_edit.oxidize_copper_roofs((-1656,60,160),(-1250,143,-333))
-world_edit.clean_copper_roofs((-1656,60,160),(-1250,143,-333))
+world_edit.clean_copper_roofs((-1577,64,-17),(-1657,103,105))
+world_edit.oxidize_copper_roofs((-1577,64,-17),(-1657,103,105))
 
 # Test undo function
 # world_edit.undo_commands()
