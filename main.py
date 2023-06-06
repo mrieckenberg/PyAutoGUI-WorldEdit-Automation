@@ -20,32 +20,39 @@ class WorldEditAutomationClass():
             [(-1324, 83, -71), (-1315, 65, -44)],
         ]
 
-        self.old_materials = [
+        self.colours = [
+            "",
+            "white",
+            "light_gray",
+            "gray",
+            "black",
+            "brown",
+            "red",
+            "orange",
+            "yellow",
+            "lime",
+            "green",
+            "cyan",
+            "light_blue",
+            "blue",
+            "purple",
+            "magenta",
+            "pink",
+        ]
 
-            # Island house old materials
-            # "light_blue_concrete",
-            # "red_terracotta",
-            # "white_terracotta",
-            # "lime_terracotta",
-            # "magenta_terracotta",
-            # "blue_terracotta",
-            # "orange_terracotta",
+        self.terracottas = [
+            colour + "_terracotta" for colour in self.colours
+        ]
 
-            "clay",
-            "white_terracotta",
-            "terracotta",
-            "yellow_terracotta",
-            "black_terracotta",
-            "red_terracotta",
-            "lime_terracotta",
-            "pink_terracotta",
+        self.concretes = [
+            colour + "_concrete" for colour in self.colours
+        ]
 
-
+        self.wools = [
+            colour + "_wool" for colour in self.colours
         ]
 
         self.new_materials = [
-
-            # Terracottas
             "terracotta",
             "white_terracotta",
             "light_gray_terracotta",
@@ -82,14 +89,20 @@ class WorldEditAutomationClass():
             "magenta_concrete",
             "pink_concrete",
 
-
             # Other materials
             "bricks",
             "cobblestone",
+        ]
 
-
-
-
+        self.old_materials = [
+            "clay",
+            "white_terracotta",
+            "terracotta",
+            "yellow_terracotta",
+            "black_terracotta",
+            "red_terracotta",
+            "lime_terracotta",
+            "pink_terracotta",
         ]
 
         # Any blocks that wish to be deleted
@@ -207,12 +220,12 @@ class WorldEditAutomationClass():
             # Position 1
             pos1 = "pos1 " + str(self.coordinates[i][0][0]) + "," + str(self.coordinates[i][0][1]) + "," + str(
                 self.coordinates[i][0][2])
-            self.send_command(pos1)
+            self.send_worldedit_command(pos1)
 
             # Position 2
             pos2 = "pos2 " + str(self.coordinates[i][1][0]) + "," + str(self.coordinates[i][1][1]) + "," + str(
                 self.coordinates[i][1][2])
-            self.send_command(pos2)
+            self.send_worldedit_command(pos2)
 
 
             # Replace the old material with a random new material
@@ -220,17 +233,17 @@ class WorldEditAutomationClass():
                 command = "replace " + self.old_materials[x] + " " + \
                           self.new_materials[random.randint(0, len(self.new_materials))-1]
                 print(command)
-                self.send_command(command)
+                self.send_worldedit_command(command)
 
             # Destroy (replace with air) scaffolding materials
             for y in range(len(self.delete_materials)):
                 command = "replace " + self.delete_materials[y] + " air"
-                self.send_command(command)
+                self.send_worldedit_command(command)
 
             # Replace old logs
             for z in range(len(self.old_logs)):
                 command = "replace " + self.old_logs[z] + " " + self.new_logs[random.randint(0, len(self.new_logs)-1)]
-                self.send_command(command)
+                self.send_worldedit_command(command)
 
 
 
@@ -247,10 +260,10 @@ class WorldEditAutomationClass():
         # print(pos2_command)
 
         # Set position 1
-        self.send_command(pos1_command)
+        self.send_worldedit_command(pos1_command)
 
         # Set position 2
-        self.send_command(pos2_command)
+        self.send_worldedit_command(pos2_command)
 
         for old_stair in self.old_stairs_materials:
             for new_stair in self.new_stairs_materials:
@@ -258,16 +271,16 @@ class WorldEditAutomationClass():
                     for half in self.half:
                         replace_stairs_command = "replace " + old_stair + "[facing=" + facing + ",half=" + half + "] " + \
                                           new_stair + "[facing=" + facing + ",half=" + half + "] "
-                        self.send_command(replace_stairs_command)
+                        self.send_worldedit_command(replace_stairs_command)
 
 
         for old_slab in self.old_slab_materials:
             for half in self.half:
                 replace_slab_command = "replace " + old_slab + "[type=" + half + "] cut_copper_slab[type=" + half + "]"
-                self.send_command(replace_slab_command)
+                self.send_worldedit_command(replace_slab_command)
 
     def clean_copper_roofs(self, pos1, pos2):
-        self.print_to_gui("Cleaning the copper roofs")
+        # self.print_to_gui("Cleaning the copper roofs")
         time.sleep(10)
 
         pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
@@ -278,11 +291,11 @@ class WorldEditAutomationClass():
         print(pos2_command)
 
         # Set position 1
-        self.send_command(pos1_command)
+        self.send_worldedit_command(pos1_command)
 
 
         # Set position 2
-        self.send_command(pos2_command)
+        self.send_worldedit_command(pos2_command)
 
 
         for old_stair in self.old_cut_copper_stairs:
@@ -290,16 +303,16 @@ class WorldEditAutomationClass():
                 for half in self.half:
                     replace_stairs_command = "replace " + old_stair + "[facing=" + facing + ",half=" + half + "] cut_copper_stairs[facing=" +\
                                              facing + ",half=" + half + "] "
-                    self.send_command(replace_stairs_command)
+                    self.send_worldedit_command(replace_stairs_command)
 
         for old_slab in self.old_cut_copper_slabs:
             for half in self.half:
                 replace_slab_command = "replace " + old_slab + "[type=" + half + "] cut_copper_slab[type=" + half + "]"
-                self.send_command(replace_slab_command)
+                self.send_worldedit_command(replace_slab_command)
 
         for old_block in self.old_cut_copper_blocks:
             replace_block_command = "replace " + old_block + " cut_copper"
-            self.send_command(replace_block_command)
+            self.send_worldedit_command(replace_block_command)
 
         self.print_to_gui("Done cleaning the copper roofs")
 
@@ -315,26 +328,26 @@ class WorldEditAutomationClass():
         print(pos2_command)
 
         # Set position 1
-        self.send_command(pos1_command)
+        self.send_worldedit_command(pos1_command)
 
         # Set position 2
-        self.send_command(pos2_command)
+        self.send_worldedit_command(pos2_command)
 
         for unoxidized_stair in self.unoxidized_copper_stairs:
             for facing in self.facing:
                 for half in self.half:
                     replace_stairs_command = "replace " + unoxidized_stair + "[facing=" + facing + ",half=" + half + "] oxidized_cut_copper_stairs[facing=" +\
                                              facing + ",half=" + half + "] "
-                    self.send_command(replace_stairs_command)
+                    self.send_worldedit_command(replace_stairs_command)
 
 
         for unoxidized_slab in self.unoxidized_copper_slabs:
             replace_slab_command = "replace " + unoxidized_slab + " oxidized_cut_copper_slab"
-            self.send_command(replace_slab_command)
+            self.send_worldedit_command(replace_slab_command)
 
         for unoxidized_block in self.unoxidized_copper_blocks:
             replace_block_command = "replace " + unoxidized_block + " oxidized_cut_copper"
-            self.send_command(replace_block_command)
+            self.send_worldedit_command(replace_block_command)
 
         self.print_to_gui("Done oxidizing the copper roofs")
 
@@ -360,22 +373,21 @@ class WorldEditAutomationClass():
         gui.typewrite('say ' + message)
         gui.press('enter')
 
-    def send_command(self, command): # Send WorldEdit command: //
-        print(command)
-        gui.press('/')
-        gui.typewrite('/' + command)
-        gui.press('enter')
-        self.increment_times_run()
-
-    def send_vanilla_command(self, command): # Send Vanilla command: /
-        print(command)
+    # Sends a vanilla command: /command
+    def send_command(self, command):
+        print('/' + command)
         gui.press('/')
         gui.typewrite(command)
         gui.press('enter')
         self.increment_times_run()
 
+    # Send WorldEdit command: //command
+    def send_worldedit_command(self, command):
+        self.send_command('/' + command)
+
+    # TODO: Turn this into a function that allows the user to choose how many floors (default 1)
+    # TODO: Turn this into a vanilla commands function
     def generate_simple_house(self, pos1, length, width, height):
-        # TODO: turn this into a function that allows the user to choose how many floors (default 1)
         # use a for loop and increment height so do something like pos1[1] + height*index
         self.print_to_gui("Generating a random house")
         time.sleep(10)
@@ -384,11 +396,11 @@ class WorldEditAutomationClass():
         pos1_command = "pos1 " + str(pos1[0]) + "," + str(pos1[1]) + "," + str(pos1[2])
         pos2_command = "pos2 " + str(pos1[0]+length) + "," + str(pos1[1]+height) + "," + str(pos1[2]+width)
 
-        self.send_command(pos1_command)
-        self.send_command(pos2_command)
+        self.send_worldedit_command(pos1_command)
+        self.send_worldedit_command(pos2_command)
 
         material = self.new_materials[random.randint(0,len(self.new_materials))]
-        self.send_command("walls " + material)
+        self.send_worldedit_command("walls " + material)
 
         # pos2_command = "pos2 " + str(pos1[0]) + "," + str(pos1[1]+height) + "," + str(pos1[2])
         # self.send_command(pos2_command)
@@ -396,7 +408,7 @@ class WorldEditAutomationClass():
 
         key_points = [
             # These work properly
-            [(pos1[0],pos1[1],pos1[2]),(pos1[0],pos1[1]+height,pos1[2])],  # LH lower corner
+            [(pos1[0], pos1[1], pos1[2]), (pos1[0], pos1[1]+height, pos1[2])],  # LH lower corner
             [(pos1[0] + length, pos1[1], pos1[2]), (pos1[0] + length, pos1[1] + height, pos1[2])],  # LH lower corner
             [(pos1[0], pos1[1], pos1[2] + width), (pos1[0], pos1[1] + height, pos1[2] + width)],  # LH upper corner
             [(pos1[0] + length, pos1[1], pos1[2] + width), (pos1[0] + length, pos1[1] + height, pos1[2] + width)],  # LH upper corner
@@ -406,22 +418,22 @@ class WorldEditAutomationClass():
             # Position 1
             pos1_command = "pos1 " + str(key_points[i][0][0]) + "," + str(key_points[i][0][1]) + "," + str(
                 key_points[i][0][2])
-            self.send_command(pos1_command)
+            self.send_worldedit_command(pos1_command)
 
             # Position 2
             pos2_command = "pos2 " + str(key_points[i][1][0]) + "," + str(key_points[i][1][1]) + "," + str(
                 key_points[i][1][2])
-            self.send_command(pos2_command)
+            self.send_worldedit_command(pos2_command)
 
 
-            self.send_command("set oak_planks")
+            self.send_worldedit_command("set oak_planks")
 
 
-        self.send_command("pos1 " + str(key_points[0][1][0]) + "," + str(key_points[0][1][1]) + "," + str(
+        self.send_worldedit_command("pos1 " + str(key_points[0][1][0]) + "," + str(key_points[0][1][1]) + "," + str(
             key_points[0][1][2]))
-        self.send_command("pos2 " + str(key_points[3][1][0]) + "," + str(key_points[3][1][1]) + "," + str(
+        self.send_worldedit_command("pos2 " + str(key_points[3][1][0]) + "," + str(key_points[3][1][1]) + "," + str(
             key_points[3][1][2]))
-        self.send_command("replace " + material + " oak_planks")
+        self.send_worldedit_command("replace " + material + " oak_planks")
 
 
 
@@ -433,11 +445,11 @@ class WorldEditAutomationClass():
 
 
 world_edit = WorldEditAutomationClass()
-world_edit.print_to_gui("Starting the WorldEdit automation process")
+# world_edit.print_to_gui("Starting the WorldEdit automation process")
 
 
 
-world_edit.replace_old_materials()
+# world_edit.replace_old_materials()
 
 # Put copper on the roofs
 # world_edit.replace_roofs_with_copper((-1618,66,76),(-1540,97,-23))
@@ -447,12 +459,12 @@ world_edit.replace_old_materials()
 
 # Change all roofs
 # world_edit.oxidize_copper_roofs((-1656,60,160),(-1250,143,-333))
-# world_edit.clean_copper_roofs((-1656,60,160),(-1250,143,-333))
+world_edit.clean_copper_roofs((-1656,60,160),(-1250,143,-333))
 
 # Test undo function
 # world_edit.undo_commands()
 
 
-world_edit.print_to_gui("The WorldEdit automation process is now complete")
+world_edit.print_to_gui("Done")
 exit(1)
 
